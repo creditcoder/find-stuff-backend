@@ -48,13 +48,13 @@ class LostPostController {
       } = req.body;
 
       const newItem = new LostPost({
-        user,
+        user: new mongodb.ObjectID(user),
         category,
         place,
         address,
         fee,
         description,
-        photo
+        photo: JSON.parse(photo)
       });
       await newItem.save();
 

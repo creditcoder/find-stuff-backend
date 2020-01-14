@@ -40,7 +40,7 @@ class FoundPostController {
       const { user, category, place, address, description, photo } = req.body;
 
       const newItem = new FoundPost({
-        user,
+        user: new mongodb.ObjectID(user),
         category,
         place,
         address,
