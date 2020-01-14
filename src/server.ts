@@ -39,7 +39,7 @@ class Server {
       .then(db => console.log("DB is connected"));
 
     // settings
-    this.app.set("port", process.env.PORT || 3000);
+    this.app.set("port", process.env.PORT || 8000);
 
     // middlewares
     this.app.use(morgan("dev"));
@@ -56,11 +56,11 @@ class Server {
     this.app.use("/api/users", userRoutes);
     this.app.use("/api/posts", postRoutes);
     this.app.use("/api/notifications", notificationRoutes);
-    this.app.use("/api/category", categoryRoutes);
-    this.app.use("/api/lostpost", lostpostRoutes);
-    this.app.use("/api/lostcomment", lostcommentRoutes);
-    this.app.use("/api/foundpost", foundpostRoutes);
-    this.app.use("/api/foundcomment", foundcommentRoutes);
+    this.app.use("/api/categories", categoryRoutes);
+    this.app.use("/api/lostposts", lostpostRoutes);
+    this.app.use("/api/lostcomments", lostcommentRoutes);
+    this.app.use("/api/foundposts", foundpostRoutes);
+    this.app.use("/api/foundcomments", foundcommentRoutes);
   }
 
   start() {
