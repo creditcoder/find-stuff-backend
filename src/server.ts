@@ -1,63 +1,73 @@
-import express from 'express';
-import morgan from 'morgan';
-import helmet from 'helmet';
-import mongoose from 'mongoose';
-import compression from 'compression';
-import cors from 'cors';
+import express from "express";
+import morgan from "morgan";
+import helmet from "helmet";
+import mongoose from "mongoose";
+import compression from "compression";
+import cors from "cors";
 
-import indexRoutes from './routes/indexRoutes';
-import postRoutes from './routes/postRoutes';
-import userRoutes from './routes/userRoutes';
-import authRoutes from './routes/authRoutes';
+import indexRoutes from "./routes/indexRoutes";
+import authRoutes from "./routes/authRoutes";
+import userRoutes from "./routes/userRoutes";
+import postRoutes from "./routes/postRoutes";
+import notificationRoutes from "./routes/notificationRoutes";
+import categoryRoutes from "./routes/categoryRoutes";
+import lostpostRoutes from "./routes/lostpostRoutes";
+import lostcommentRoutes from "./routes/lostcommentRoutes";
+import foundpostRoutes from "./routes/foundpostRoutes";
+import foundcommentRoutes from "./routes/foundcommentRoutes";
 
-class Server{
+class Server {
+  public app: express.Application;
 
-    public app: express.Application;
+  constructor() {
+    this.app = express();
+    this.config();
+    this.routes();
+  }
 
-    constructor(){
-        this.app = express();
-        this.config();
-        this.routes();
-    }
+  config() {
+    // db
+    const MONGO_URI = "mongodb://localhost/find-stuff";
+    mongoose.set("useFindAndModify", true);
+    mongoose
+      .connect(process.env.MONGODB_URI || MONGO_URI, {
+        useNewUrlParser: true,
+        useCreateIndex: true,
+        useUnifiedTopology: true,
+        useFindAndModify: false
+      })
+      .then(db => console.log("DB is connected"));
 
-    config(){
+    // settings
+    this.app.set("port", process.env.PORT || 3000);
 
-        // db
-        const MONGO_URI = 'mongodb://localhost/restapimongo';
-        mongoose.set('useFindAndModify', true);
-        mongoose.connect(process.env.MONGODB_URI || MONGO_URI,{
-            useNewUrlParser: true,
-            useCreateIndex: true,
-            useUnifiedTopology: true,
-            useFindAndModify : false
-        })
-        .then(db => console.log('DB is connected'));
+    // middlewares
+    this.app.use(morgan("dev"));
+    this.app.use(express.json());
+    this.app.use(express.urlencoded({ extended: false }));
+    this.app.use(helmet());
+    this.app.use(compression());
+    this.app.use(cors());
+  }
 
-        // settings
-        this.app.set('port', process.env.PORT || 3000);
+  routes() {
+    this.app.use(indexRoutes);
+    this.app.use("/api/auth", authRoutes);
+    this.app.use("/api/users", userRoutes);
+    this.app.use("/api/posts", postRoutes);
+    this.app.use("/api/notifications", notificationRoutes);
+    this.app.use("/api/category", categoryRoutes);
+    this.app.use("/api/lostpost", lostpostRoutes);
+    this.app.use("/api/lostcomment", lostcommentRoutes);
+    this.app.use("/api/foundpost", foundpostRoutes);
+    this.app.use("/api/foundcomment", foundcommentRoutes);
+  }
 
-        // middlewares
-        this.app.use(morgan('dev'));
-        this.app.use(express.json());
-        this.app.use(express.urlencoded({extended:false}));
-        this.app.use(helmet());
-        this.app.use(compression());
-        this.app.use(cors());
-    }
-
-    routes(){
-        this.app.use(indexRoutes);
-        this.app.use('/api/posts', postRoutes);
-        this.app.use('/api/users', userRoutes);
-        this.app.use('/api/auth', authRoutes);
-    }
-
-    start(){
-        this.app.listen(this.app.get('port'), () =>{
-            console.log('Server on port', this.app.get('port'));
-        });
-    }
-
+  start() {
+    this.app.listen(this.app.get("port"), () => {
+      console.log("Server on port", this.app.get("port"));
+    });
+  }
 }
 
 const server = new Server();

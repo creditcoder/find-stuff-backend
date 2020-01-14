@@ -1,18 +1,16 @@
-import { Request, Response, Router } from 'express';
+import { Request, Response, Router } from "express";
 
-class IndexRoutes{
+class IndexRoutes {
+  router: Router;
 
-    router: Router;
+  constructor() {
+    this.router = Router();
+    this.routes();
+  }
 
-    constructor(){
-        this.router = Router();
-        this.routes();
-    }
-
-    routes(){
-        this.router.get('/', (req, res) => res.send('Api: /api/posts'));
-    }
-
+  routes() {
+    // this.router.get('/', (req, res) => res.send('Api: /api/posts'));
+  }
 }
 
 const indexRoutes = new IndexRoutes();
