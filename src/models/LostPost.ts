@@ -3,7 +3,7 @@ import { Schema, model } from "mongoose";
 const LostPostSchema = new Schema({
   user: { type: Schema.Types.ObjectId, ref: "User", required: true },
 
-  category: { type: String, required: true },
+  tag: { type: String, required: true },
   place: { type: String, required: true },
   address: { type: String, required: true },
   fee: { type: Number, required: true },

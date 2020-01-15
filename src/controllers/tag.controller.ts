@@ -1,17 +1,17 @@
 import { Request, Response } from "express";
-import Category from "../models/Category";
+import Tag from "../models/Tag";
 import mongodb from "mongodb";
 
-class CategoryController {
+class TagController {
   public async getItems(req: Request, res: Response): Promise<void> {
-    const items = await Category.find();
+    const items = await Tag.find();
     res.json(items);
   }
 
   public async getItem(req: Request, res: Response) {
     try {
       const url = req.params.url;
-      const item = await Category.findOne({
+      const item = await Tag.findOne({
         _id: new mongodb.ObjectID(url)
       });
 
@@ -37,9 +37,9 @@ class CategoryController {
 
   public async createItem(req: Request, res: Response): Promise<void> {
     try {
-      const { title, icon } = req.body;
+      const { name, icon, description } = req.body;
 
-      const newItem = new Category({ title, icon });
+      const newItem = new Tag({ name, icon, description });
       await newItem.save();
 
       res.status(200).json({
@@ -59,7 +59,7 @@ class CategoryController {
   public async updateItem(req: Request, res: Response): Promise<any> {
     try {
       const url = req.params.url;
-      const updatedItem = await Category.findOneAndUpdate(
+      const updatedItem = await Tag.findOneAndUpdate(
         { _id: new mongodb.ObjectID(url) },
         req.body,
         {
@@ -90,7 +90,7 @@ class CategoryController {
   public async deleteItem(req: Request, res: Response): Promise<any> {
     try {
       const url = req.params.url;
-      const deletedItem = await Category.findOneAndDelete(
+      const deletedItem = await Tag.findOneAndDelete(
         { _id: new mongodb.ObjectID(url) },
         req.body
       );
@@ -116,4 +116,4 @@ class CategoryController {
   }
 }
 
-export default new CategoryController();
+export default new TagController();

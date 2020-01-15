@@ -13,7 +13,7 @@ class LostPostController {
       const url = req.params.url;
       const item = await LostPost.findOne({
         _id: new mongodb.ObjectID(url)
-      });
+      }).populate("user");
 
       if (!item)
         return res.status(400).json({
@@ -37,19 +37,11 @@ class LostPostController {
 
   public async createItem(req: Request, res: Response): Promise<void> {
     try {
-      const {
-        user,
-        category,
-        place,
-        address,
-        fee,
-        description,
-        photo
-      } = req.body;
+      const { user, tag, place, address, fee, description, photo } = req.body;
 
       const newItem = new LostPost({
         user: new mongodb.ObjectID(user),
-        category,
+        tag,
         place,
         address,
         fee,

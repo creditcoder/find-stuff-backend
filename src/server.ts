@@ -10,7 +10,7 @@ import authRoutes from "./routes/authRoutes";
 import userRoutes from "./routes/userRoutes";
 import postRoutes from "./routes/postRoutes";
 import notificationRoutes from "./routes/notificationRoutes";
-import categoryRoutes from "./routes/categoryRoutes";
+import tagRoutes from "./routes/tagRoutes";
 import lostpostRoutes from "./routes/lostpostRoutes";
 import lostcommentRoutes from "./routes/lostcommentRoutes";
 import foundpostRoutes from "./routes/foundpostRoutes";
@@ -53,11 +53,11 @@ class Server {
   routes() {
     this.app.use(indexRoutes);
     this.app.use("/api/auth", authRoutes);
-    this.app.use("/api/users", userRoutes);
+    this.app.use("/api/user", userRoutes);
     this.app.use("/api/posts", postRoutes);
     this.app.use("/api/notifications", notificationRoutes);
-    this.app.use("/api/categories", categoryRoutes);
-    this.app.use("/api/lostposts", lostpostRoutes);
+    this.app.use("/api/tag", tagRoutes);
+    this.app.use("/api/lostpost", lostpostRoutes);
     this.app.use("/api/lostcomments", lostcommentRoutes);
     this.app.use("/api/foundposts", foundpostRoutes);
     this.app.use("/api/foundcomments", foundcommentRoutes);
