@@ -4,7 +4,13 @@ import mongodb from "mongodb";
 
 class LostPostController {
   public async getItems(req: Request, res: Response): Promise<void> {
-    const items = await LostPost.find();
+    const tag = req.query.tag;
+    const key = req.query.key;
+
+    let filter = {};
+
+    if (tag !== undefined) filter = { ...filter, tag };
+    const items = await LostPost.find(filter);
     res.json(items);
   }
 

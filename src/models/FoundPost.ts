@@ -14,7 +14,6 @@ const FoundPostSchema = new Schema({
     }
   ],
 
-  browse: { type: Number },
   comment: { type: Number },
 
   createAt: { type: Date, default: Date.now },
