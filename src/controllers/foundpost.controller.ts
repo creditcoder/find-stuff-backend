@@ -37,7 +37,7 @@ class FoundPostController {
 
   public async createItem(req: Request, res: Response): Promise<void> {
     try {
-      const { user, tag, place, address, description, photo } = req.body;
+      const { user, tag, place, address, description, photos } = req.body;
 
       const newItem = new FoundPost({
         user: new mongodb.ObjectID(user),
@@ -45,7 +45,7 @@ class FoundPostController {
         place,
         address,
         description,
-        photo
+        photos
       });
       await newItem.save();
 

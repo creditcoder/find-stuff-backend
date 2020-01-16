@@ -8,9 +8,9 @@ const FoundPostSchema = new Schema({
   address: { type: String, required: true },
   description: { type: String, required: true },
 
-  photo: [
+  photos: [
     {
-      url: { type: String, required: true, unique: true, lowercase: true }
+      path: { type: String, required: true, lowercase: true }
     }
   ],
 

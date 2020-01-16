@@ -5,6 +5,8 @@ import mongoose from "mongoose";
 import compression from "compression";
 import cors from "cors";
 
+import uploadRoutes from "./routes/uploadRoutes";
+
 import indexRoutes from "./routes/indexRoutes";
 import authRoutes from "./routes/authRoutes";
 import userRoutes from "./routes/userRoutes";
@@ -21,6 +23,7 @@ class Server {
 
   constructor() {
     this.app = express();
+
     this.config();
     this.routes();
   }
@@ -52,15 +55,18 @@ class Server {
 
   routes() {
     this.app.use(indexRoutes);
+
+    this.app.use("/upload", uploadRoutes);
+
     this.app.use("/api/auth", authRoutes);
     this.app.use("/api/user", userRoutes);
-    this.app.use("/api/posts", postRoutes);
-    this.app.use("/api/notifications", notificationRoutes);
+    this.app.use("/api/post", postRoutes);
+    this.app.use("/api/notification", notificationRoutes);
     this.app.use("/api/tag", tagRoutes);
     this.app.use("/api/lostpost", lostpostRoutes);
-    this.app.use("/api/lostcomments", lostcommentRoutes);
-    this.app.use("/api/foundposts", foundpostRoutes);
-    this.app.use("/api/foundcomments", foundcommentRoutes);
+    this.app.use("/api/lostcomment", lostcommentRoutes);
+    this.app.use("/api/foundpost", foundpostRoutes);
+    this.app.use("/api/foundcomment", foundcommentRoutes);
   }
 
   start() {
