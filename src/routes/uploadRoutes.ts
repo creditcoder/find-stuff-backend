@@ -1,5 +1,4 @@
 import { Router, Request, Response } from "express";
-import uploadController from "../controllers/upload.controller";
 
 import multer from "multer";
 const upload = multer({ dest: "uploads/" });
@@ -13,8 +12,6 @@ class UploadRoutes {
   }
 
   routes() {
-    // this.router.post("/photo", uploadController.photo);
-
     this.router.post("/file", upload.single("file"), async (req, res) => {
       try {
         res.send({ photo: req.file });

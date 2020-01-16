@@ -6,6 +6,7 @@ import compression from "compression";
 import cors from "cors";
 
 import uploadRoutes from "./routes/uploadRoutes";
+import downloadRoutes from "./routes/downloadRoutes";
 
 import indexRoutes from "./routes/indexRoutes";
 import authRoutes from "./routes/authRoutes";
@@ -57,6 +58,7 @@ class Server {
     this.app.use(indexRoutes);
 
     this.app.use("/upload", uploadRoutes);
+    this.app.use("/download", downloadRoutes);
 
     this.app.use("/api/auth", authRoutes);
     this.app.use("/api/user", userRoutes);

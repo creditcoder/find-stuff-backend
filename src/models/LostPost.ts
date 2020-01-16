@@ -9,9 +9,9 @@ const LostPostSchema = new Schema({
   fee: { type: Number, required: true },
   description: { type: String, required: true },
 
-  photo: [
+  photos: [
     {
-      url: { type: String, required: true, unique: true, lowercase: true }
+      path: { type: String, required: true, lowercase: true }
     }
   ],
 

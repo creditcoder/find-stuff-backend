@@ -37,7 +37,7 @@ class LostPostController {
 
   public async createItem(req: Request, res: Response): Promise<void> {
     try {
-      const { user, tag, place, address, fee, description, photo } = req.body;
+      const { user, tag, place, address, fee, description, photos } = req.body;
 
       const newItem = new LostPost({
         user: new mongodb.ObjectID(user),
@@ -46,7 +46,7 @@ class LostPostController {
         address,
         fee,
         description,
-        photo: JSON.parse(photo)
+        photos
       });
       await newItem.save();
 
