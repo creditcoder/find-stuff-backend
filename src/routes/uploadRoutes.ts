@@ -14,7 +14,7 @@ class UploadRoutes {
   routes() {
     this.router.post("/file", upload.single("file"), async (req, res) => {
       try {
-        res.send({ photo: req.file });
+        res.send({ file: req.file });
       } catch (err) {
         res.sendStatus(400);
       }

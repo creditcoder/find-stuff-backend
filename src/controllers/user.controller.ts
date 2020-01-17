@@ -9,6 +9,8 @@ class UserController {
   }
 
   public async getUser(req: Request, res: Response) {
+    console.log(1111);
+
     try {
       const username = req.params.username;
       const user = await User.findOne({ username });
@@ -34,20 +36,24 @@ class UserController {
   }
 
   public async createUser(req: Request, res: Response): Promise<void | any> {
-    // validation
-    const { error } = signupValidation(req.body);
-    if (error) return res.status(400).json(error.message);
+    // // validation
+    // const { error } = signupValidation(req.body);
+    // if (error) return res.status(400).json(error.message);
 
-    // username validation
-    const usernameExist = await User.findOne({ username: req.body.username });
-    console.log(usernameExist);
-    if (usernameExist)
-      return res.status(400).json({ msg: "Username already exist." });
+    // // username validation
+    // const usernameExist = await User.findOne({ username: req.body.username });
+    // console.log(usernameExist);
+    // if (usernameExist)
+    //   return res.status(400).json({ msg: "Username already exist." });
 
     try {
-      const { name, username, email, phone, password } = req.body;
+      // const { name, username, email, phone, password } = req.body;
 
-      const newUser = new User({ name, username, email, phone, password });
+      console.log(2323);
+
+      const { name, phone, password, photo } = req.body;
+
+      const newUser = new User({ name, phone, password, photo });
       await newUser.save();
 
       res.status(200).json({
@@ -65,6 +71,8 @@ class UserController {
   }
 
   public async updateUser(req: Request, res: Response): Promise<any> {
+    console.log(6676);
+
     try {
       const username = req.params.username;
       const updatedUser = await User.findOneAndUpdate({ username }, req.body, {

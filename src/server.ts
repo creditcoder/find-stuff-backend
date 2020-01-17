@@ -21,12 +21,16 @@ import foundcommentRoutes from "./routes/foundcommentRoutes";
 
 class Server {
   public app: express.Application;
+  // public io: express.Application;
 
   constructor() {
     this.app = express();
 
+    // this.io = require("socket.io")(this.app);
+
     this.config();
     this.routes();
+    // this.io_routes();
   }
 
   config() {
@@ -70,6 +74,28 @@ class Server {
     this.app.use("/api/foundpost", foundpostRoutes);
     this.app.use("/api/foundcomment", foundcommentRoutes);
   }
+
+  // io_routes() {
+  //   this.io.on("connect", socket => {
+  //     // Say Hi to all connected clients
+  //     this.io.emit("broadcast", "[Server]: Welcome stranger!");
+
+  //     console.log("Hi everybody");
+
+  //     socket.on("message", msg => {
+  //       // console.log(`message received from user: ${msg.from}`);
+  //       // console.log(`message received content: ${msg.content}`);
+  //       this.io.emit("broadcast", "[Server]: asdasdfasdfasdf!");
+  //       this.io.emit("message", msg);
+  //     });
+
+  //     // Say Bye to all connected clients
+  //     let self = this;
+  //     socket.on("disconnect", function() {
+  //       self.io.emit("broadcast", "[Server]: Bye, bye, stranger!");
+  //     });
+  //   });
+  // }
 
   start() {
     this.app.listen(this.app.get("port"), () => {
