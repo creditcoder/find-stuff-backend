@@ -9,7 +9,14 @@ class LostPostController {
 
     let filter = {};
 
-    if (tag !== undefined) filter = { ...filter, tag };
+    if (tag !== undefined && tag !== "") filter = { ...filter, tag };
+    if (key !== undefined && key !== "")
+      filter = { ...filter, $text: { $search: key } };
+
+    console.log(filter);
+
+    await LostPost.createIndexes();
+
     const items = await LostPost.find(filter);
     res.json(items);
   }
@@ -125,6 +132,35 @@ class LostPostController {
       res.status(500).json({
         success: false,
         msg: "Item not deleted"
+      });
+    }
+  }
+
+  public async increaseBrowseCnt(req: Request, res: Response): Promise<any> {
+    try {
+      const url = req.params.url;
+      const updatedItem = await LostPost.findOneAndUpdate(
+        { _id: new mongodb.ObjectID(url) },
+        { $inc: { browse: 1 } },
+        {}
+      );
+
+      if (!updatedItem)
+        return res.status(400).json({
+          success: false,
+          msg: "Item not updated"
+        });
+
+      res.status(200).json({
+        success: true,
+        msg: "Item updated.",
+        item: updatedItem
+      });
+    } catch (err) {
+      console.log("error => ", err);
+      res.status(500).json({
+        success: false,
+        msg: "Item not updated"
       });
     }
   }

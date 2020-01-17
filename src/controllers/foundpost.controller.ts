@@ -4,7 +4,20 @@ import mongodb from "mongodb";
 
 class FoundPostController {
   public async getItems(req: Request, res: Response): Promise<void> {
-    const items = await FoundPost.find();
+    const tag = req.query.tag;
+    const key = req.query.key;
+
+    let filter = {};
+
+    if (tag !== undefined && tag !== "") filter = { ...filter, tag };
+    if (key !== undefined && key !== "")
+      filter = { ...filter, $text: { $search: key } };
+
+    console.log(filter);
+
+    await FoundPost.createIndexes();
+
+    const items = await FoundPost.find(filter);
     res.json(items);
   }
 
@@ -118,6 +131,35 @@ class FoundPostController {
       res.status(500).json({
         success: false,
         msg: "Item not deleted"
+      });
+    }
+  }
+
+  public async increaseBrowseCnt(req: Request, res: Response): Promise<any> {
+    try {
+      const url = req.params.url;
+      const updatedItem = await FoundPost.findOneAndUpdate(
+        { _id: new mongodb.ObjectID(url) },
+        { $inc: { browse: 1 } },
+        {}
+      );
+
+      if (!updatedItem)
+        return res.status(400).json({
+          success: false,
+          msg: "Item not updated"
+        });
+
+      res.status(200).json({
+        success: true,
+        msg: "Item updated.",
+        item: updatedItem
+      });
+    } catch (err) {
+      console.log("error => ", err);
+      res.status(500).json({
+        success: false,
+        msg: "Item not updated"
       });
     }
   }

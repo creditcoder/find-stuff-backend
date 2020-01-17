@@ -15,6 +15,8 @@ class LostPostRoutes {
     this.router.post("/", lostpostController.createItem);
     this.router.put("/:url", lostpostController.updateItem);
     this.router.delete("/:url", lostpostController.deleteItem);
+
+    this.router.post("/:url", lostpostController.increaseBrowseCnt);
   }
 }
 

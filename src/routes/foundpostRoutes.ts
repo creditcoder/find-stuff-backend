@@ -15,6 +15,8 @@ class FoundPostRoutes {
     this.router.post("/", foundpostController.createItem);
     this.router.put("/:url", foundpostController.updateItem);
     this.router.delete("/:url", foundpostController.deleteItem);
+
+    this.router.post("/:url", foundpostController.increaseBrowseCnt);
   }
 }
 
