@@ -1,24 +1,32 @@
-import { Router } from 'express';
-import userController from '../controllers/user.controller';
-import { tokenValidation } from '../middlewares/verifyToken'
+import { Router } from "express";
+import userController from "../controllers/user.controller";
+import { tokenValidation } from "../middlewares/verifyToken";
 
-class UserRoutes{
+class UserRoutes {
+  router: Router;
 
-    router: Router;
+  constructor() {
+    this.router = Router();
+    this.routes();
+  }
 
-    constructor(){
-        this.router = Router();
-        this.routes();
-    }
+  routes() {
+    this.router.get("/", tokenValidation, userController.getUsers);
+    this.router.get("/:username", tokenValidation, userController.getUser);
+    this.router.post("/", tokenValidation, userController.createUser);
+    this.router.put("/:username", tokenValidation, userController.updateUser);
+    this.router.delete(
+      "/:username",
+      tokenValidation,
+      userController.deleteUser
+    );
 
-    routes(){
-        this.router.get('/', tokenValidation, userController.getUsers);
-        this.router.get('/:username', tokenValidation, userController.getUser);
-        this.router.post('/', tokenValidation, userController.createUser);
-        this.router.put('/:username', tokenValidation, userController.updateUser);
-        this.router.delete('/:username', tokenValidation, userController.deleteUser);
-    }
-    
+    this.router.put(
+      "/m/:username",
+      tokenValidation,
+      userController.updateMUser
+    );
+  }
 }
 
 const userRoutes = new UserRoutes();

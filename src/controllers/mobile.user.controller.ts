@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import User from "../models/User";
 import { signupValidation } from "../libs/joi";
 import mongodb from "mongodb";
-class UserController {
+class MobileUserController {
   public async getUsers(req: Request, res: Response): Promise<void> {
     const users = await User.find();
     res.json(users);
@@ -69,34 +69,6 @@ class UserController {
 
   public async updateUser(req: Request, res: Response): Promise<any> {
     try {
-      console.log("bbbbbbbb");
-      const username = req.params.username;
-      const updatedUser = await User.findOneAndUpdate({ username }, req.body, {
-        new: true
-      });
-
-      if (!updatedUser)
-        return res.status(400).json({
-          success: false,
-          msg: "User not updated"
-        });
-
-      res.status(200).json({
-        success: true,
-        msg: "User updated.",
-        post: updatedUser
-      });
-    } catch (err) {
-      console.log("error => ", err);
-      res.status(500).json({
-        success: false,
-        msg: "User not updated"
-      });
-    }
-  }
-
-  public async updateMUser(req: Request, res: Response): Promise<any> {
-    try {
       console.log("ggggggggggggg");
       const _id = req.params._id;
       const updatedUser = await User.findOneAndUpdate(
@@ -151,4 +123,4 @@ class UserController {
   }
 }
 
-export default new UserController();
+export default new MobileUserController();

@@ -19,6 +19,8 @@ import lostcommentRoutes from "./routes/lostcommentRoutes";
 import foundpostRoutes from "./routes/foundpostRoutes";
 import foundcommentRoutes from "./routes/foundcommentRoutes";
 
+import mobileUserRoutes from "./routes/mobileUserRoutes";
+
 class Server {
   public app: express.Application;
   // public io: express.Application;
@@ -61,10 +63,11 @@ class Server {
   routes() {
     this.app.use(indexRoutes);
 
+    this.app.use("/auth", authRoutes);
+
     this.app.use("/upload", uploadRoutes);
     this.app.use("/download", downloadRoutes);
 
-    this.app.use("/api/auth", authRoutes);
     this.app.use("/api/user", userRoutes);
     this.app.use("/api/post", postRoutes);
     this.app.use("/api/notification", notificationRoutes);
@@ -73,29 +76,9 @@ class Server {
     this.app.use("/api/lostcomment", lostcommentRoutes);
     this.app.use("/api/foundpost", foundpostRoutes);
     this.app.use("/api/foundcomment", foundcommentRoutes);
+
+    this.app.use("/api/mobile/user", mobileUserRoutes);
   }
-
-  // io_routes() {
-  //   this.io.on("connect", socket => {
-  //     // Say Hi to all connected clients
-  //     this.io.emit("broadcast", "[Server]: Welcome stranger!");
-
-  //     console.log("Hi everybody");
-
-  //     socket.on("message", msg => {
-  //       // console.log(`message received from user: ${msg.from}`);
-  //       // console.log(`message received content: ${msg.content}`);
-  //       this.io.emit("broadcast", "[Server]: asdasdfasdfasdf!");
-  //       this.io.emit("message", msg);
-  //     });
-
-  //     // Say Bye to all connected clients
-  //     let self = this;
-  //     socket.on("disconnect", function() {
-  //       self.io.emit("broadcast", "[Server]: Bye, bye, stranger!");
-  //     });
-  //   });
-  // }
 
   start() {
     this.app.listen(this.app.get("port"), () => {
