@@ -6,6 +6,7 @@ class StuffPostController {
   public async getItems(req: Request, res: Response): Promise<void> {
     const tag = req.query.tag;
     const key = req.query.key;
+    const sort = req.query.sort;
 
     let filter = {};
 
@@ -13,15 +14,22 @@ class StuffPostController {
     if (key !== undefined && key !== "")
       filter = { ...filter, $text: { $search: key } };
 
+    console.log(sort, "sort");
+
+    if (sort !== undefined && sort !== "" && parseInt(sort) === 2) {
+      filter = { ...filter, ads: true };
+    }
+
+    const sortObj = parseInt(sort) === 1 ? { browse: -1 } : { _id: -1 };
+
     console.log(filter);
+    console.log(sortObj);
 
     await StuffPost.createIndexes();
 
-    const items = await StuffPost.find(filter).populate("user", [
-      "name",
-      "phone",
-      "photo"
-    ]);
+    let items = await StuffPost.find(filter)
+      .populate("user", ["name", "phone", "photo"])
+      .sort(sortObj);
 
     res.json(items);
   }
@@ -149,35 +157,6 @@ class StuffPostController {
       res.status(500).json({
         success: false,
         msg: "Item not deleted"
-      });
-    }
-  }
-
-  public async increaseBrowseCnt(req: Request, res: Response): Promise<any> {
-    try {
-      const url = req.params.url;
-      const updatedItem = await StuffPost.findOneAndUpdate(
-        { _id: new mongodb.ObjectID(url) },
-        { $inc: { browse: 1 } },
-        { new: true }
-      ).populate("user", ["name", "phone", "photo"]);
-
-      if (!updatedItem)
-        return res.status(400).json({
-          success: false,
-          msg: "Item not updated"
-        });
-
-      res.status(200).json({
-        success: true,
-        msg: "Item updated.",
-        item: updatedItem
-      });
-    } catch (err) {
-      console.log("error => ", err);
-      res.status(500).json({
-        success: false,
-        msg: "Item not updated"
       });
     }
   }

@@ -95,36 +95,6 @@ class UserController {
     }
   }
 
-  public async updateMUser(req: Request, res: Response): Promise<any> {
-    try {
-      console.log("ggggggggggggg");
-      const _id = req.params._id;
-      const updatedUser = await User.findOneAndUpdate(
-        { _id: new mongodb.ObjectID(_id) },
-        req.body,
-        {}
-      );
-
-      if (!updatedUser)
-        return res.status(400).json({
-          success: false,
-          msg: "User not updated"
-        });
-
-      res.status(200).json({
-        success: true,
-        msg: "User updated.",
-        post: updatedUser
-      });
-    } catch (err) {
-      console.log("error => ", err);
-      res.status(500).json({
-        success: false,
-        msg: "User not updated"
-      });
-    }
-  }
-
   public async deleteUser(req: Request, res: Response): Promise<any> {
     try {
       const username = req.params.username;

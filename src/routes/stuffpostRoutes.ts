@@ -15,8 +15,6 @@ class StuffPostRoutes {
     this.router.post("/", stuffpostController.createItem);
     this.router.put("/:url", stuffpostController.updateItem);
     this.router.delete("/:url", stuffpostController.deleteItem);
-
-    this.router.post("/:url", stuffpostController.increaseBrowseCnt);
   }
 }
 

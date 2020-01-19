@@ -44,3 +44,13 @@ export const signinValidation = (data: object) => {
   });
   return userSchema.validate(data);
 };
+
+export const loginValidation = (data: object) => {
+  const userSchema = Joi.object({
+    email: Joi.string().required(),
+    password: Joi.string()
+      .min(6)
+      .required()
+  });
+  return userSchema.validate(data);
+};

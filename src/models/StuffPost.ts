@@ -20,7 +20,15 @@ const StuffPostSchema = new Schema(
 
     ads: { type: Boolean, required: true },
     browse: { type: Number, required: true },
-    // likes: { type: Number, required: true },
+
+    likes: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+        unique: true
+      }
+    ],
 
     createAt: { type: Date, default: Date.now },
     updateAt: { type: Date, default: Date.now }

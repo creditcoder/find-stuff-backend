@@ -1,17 +1,17 @@
 import { Request, Response } from "express";
-import Notification from "../models/Notification";
+import News from "../models/News";
 import mongodb from "mongodb";
 
-class NotificationController {
+class NewsController {
   public async getItems(req: Request, res: Response): Promise<void> {
-    const items = await Notification.find();
+    const items = await News.find();
     res.json(items);
   }
 
   public async getItem(req: Request, res: Response) {
     try {
       const url = req.params.url;
-      const item = await Notification.findOne({
+      const item = await News.findOne({
         _id: new mongodb.ObjectID(url)
       });
 
@@ -39,7 +39,7 @@ class NotificationController {
     try {
       const { content } = req.body;
 
-      const newItem = new Notification({ content });
+      const newItem = new News({ content });
       await newItem.save();
 
       res.status(200).json({
@@ -59,7 +59,7 @@ class NotificationController {
   public async updateItem(req: Request, res: Response): Promise<any> {
     try {
       const url = req.params.url;
-      const updatedItem = await Notification.findOneAndUpdate(
+      const updatedItem = await News.findOneAndUpdate(
         { _id: new mongodb.ObjectID(url) },
         req.body,
         {
@@ -90,7 +90,7 @@ class NotificationController {
   public async deleteItem(req: Request, res: Response): Promise<any> {
     try {
       const url = req.params.url;
-      const deletedItem = await Notification.findOneAndDelete(
+      const deletedItem = await News.findOneAndDelete(
         { _id: new mongodb.ObjectID(url) },
         req.body
       );
@@ -114,32 +114,6 @@ class NotificationController {
       });
     }
   }
-
-  public async getLastItem(req: Request, res: Response) {
-    try {
-      const item = await Notification.find({})
-        .sort({ _id: -1 })
-        .limit(1);
-
-      if (!item)
-        return res.status(400).json({
-          success: false,
-          msg: "Item not found"
-        });
-
-      res.status(200).json({
-        success: true,
-        msg: "Item found",
-        item: item[0]
-      });
-    } catch (err) {
-      console.log("error => ", err);
-      res.status(404).json({
-        success: false,
-        msg: "Item not found."
-      });
-    }
-  }
 }
 
-export default new NotificationController();
+export default new NewsController();

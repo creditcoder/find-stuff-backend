@@ -13,10 +13,13 @@ import authRoutes from "./routes/authRoutes";
 import userRoutes from "./routes/userRoutes";
 import postRoutes from "./routes/postRoutes";
 import notificationRoutes from "./routes/notificationRoutes";
+import newsRoutes from "./routes/newsRoutes";
+import contactRoutes from "./routes/contactRoutes";
 import tagRoutes from "./routes/tagRoutes";
 import stuffpostRoutes from "./routes/stuffpostRoutes";
+import stuffpostRoutes2 from "./routes/stuffpostRoutes2";
 
-import mobileUserRoutes from "./routes/mobileUserRoutes";
+import userRoutes2 from "./routes/userRoutes2";
 
 class Server {
   public app: express.Application;
@@ -68,10 +71,15 @@ class Server {
     this.app.use("/api/user", userRoutes);
     this.app.use("/api/post", postRoutes);
     this.app.use("/api/notification", notificationRoutes);
+    this.app.use("/api/news", newsRoutes);
     this.app.use("/api/tag", tagRoutes);
+    this.app.use("/api/contact", contactRoutes);
     this.app.use("/api/stuffpost", stuffpostRoutes);
 
-    this.app.use("/api/mobile/user", mobileUserRoutes);
+    ////////////////////////////////////////////////////////////////////////
+
+    this.app.use("/api2/user", userRoutes2);
+    this.app.use("/api2/stuffpost", stuffpostRoutes2);
   }
 
   start() {

@@ -20,12 +20,6 @@ class UserRoutes {
       tokenValidation,
       userController.deleteUser
     );
-
-    this.router.put(
-      "/m/:username",
-      tokenValidation,
-      userController.updateMUser
-    );
   }
 }
 
