@@ -14,10 +14,7 @@ import userRoutes from "./routes/userRoutes";
 import postRoutes from "./routes/postRoutes";
 import notificationRoutes from "./routes/notificationRoutes";
 import tagRoutes from "./routes/tagRoutes";
-import lostpostRoutes from "./routes/lostpostRoutes";
-import lostcommentRoutes from "./routes/lostcommentRoutes";
-import foundpostRoutes from "./routes/foundpostRoutes";
-import foundcommentRoutes from "./routes/foundcommentRoutes";
+import stuffpostRoutes from "./routes/stuffpostRoutes";
 
 import mobileUserRoutes from "./routes/mobileUserRoutes";
 
@@ -72,10 +69,7 @@ class Server {
     this.app.use("/api/post", postRoutes);
     this.app.use("/api/notification", notificationRoutes);
     this.app.use("/api/tag", tagRoutes);
-    this.app.use("/api/lostpost", lostpostRoutes);
-    this.app.use("/api/lostcomment", lostcommentRoutes);
-    this.app.use("/api/foundpost", foundpostRoutes);
-    this.app.use("/api/foundcomment", foundcommentRoutes);
+    this.app.use("/api/stuffpost", stuffpostRoutes);
 
     this.app.use("/api/mobile/user", mobileUserRoutes);
   }

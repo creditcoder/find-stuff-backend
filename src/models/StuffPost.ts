@@ -1,8 +1,10 @@
 import { Schema, model } from "mongoose";
 
-const LostPostSchema = new Schema(
+const StuffPostSchema = new Schema(
   {
     user: { type: Schema.Types.ObjectId, ref: "User", required: true },
+
+    kind: { type: String, required: true }, //lost, found
 
     tag: { type: String, required: true, text: true },
     place: { type: String, required: true, text: true },
@@ -16,7 +18,9 @@ const LostPostSchema = new Schema(
       }
     ],
 
+    ads: { type: Boolean, required: true },
     browse: { type: Number, required: true },
+    // likes: { type: Number, required: true },
 
     createAt: { type: Date, default: Date.now },
     updateAt: { type: Date, default: Date.now }
@@ -24,6 +28,6 @@ const LostPostSchema = new Schema(
   { autoIndex: false }
 );
 
-LostPostSchema.index({ description: "text", place: "text", address: "text" });
+StuffPostSchema.index({ description: "text", place: "text", address: "text" });
 
-export default model("LostPost", LostPostSchema);
+export default model("StuffPost", StuffPostSchema);

@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import FoundPost from "../models/FoundPost";
+import StuffPost from "../models/StuffPost";
 import mongodb from "mongodb";
 
-class FoundPostController {
+class StuffPostController {
   public async getItems(req: Request, res: Response): Promise<void> {
     const tag = req.query.tag;
     const key = req.query.key;
@@ -15,18 +15,23 @@ class FoundPostController {
 
     console.log(filter);
 
-    await FoundPost.createIndexes();
+    await StuffPost.createIndexes();
 
-    const items = await FoundPost.find(filter);
+    const items = await StuffPost.find(filter).populate("user", [
+      "name",
+      "phone",
+      "photo"
+    ]);
+
     res.json(items);
   }
 
   public async getItem(req: Request, res: Response) {
     try {
       const url = req.params.url;
-      const item = await FoundPost.findOne({
+      const item = await StuffPost.findOne({
         _id: new mongodb.ObjectID(url)
-      });
+      }).populate("user");
 
       if (!item)
         return res.status(400).json({
@@ -50,15 +55,28 @@ class FoundPostController {
 
   public async createItem(req: Request, res: Response): Promise<void> {
     try {
-      const { user, tag, place, address, description, photos } = req.body;
+      const {
+        user,
+        tag,
+        place,
+        address,
+        kind,
+        fee,
+        description,
+        photos
+      } = req.body;
 
-      const newItem = new FoundPost({
+      const newItem = new StuffPost({
         user: new mongodb.ObjectID(user),
         tag,
         place,
         address,
+        kind,
+        fee,
         description,
-        photos
+        photos,
+        browse: 0,
+        ads: false
       });
       await newItem.save();
 
@@ -79,7 +97,7 @@ class FoundPostController {
   public async updateItem(req: Request, res: Response): Promise<any> {
     try {
       const url = req.params.url;
-      const updatedItem = await FoundPost.findOneAndUpdate(
+      const updatedItem = await StuffPost.findOneAndUpdate(
         { _id: new mongodb.ObjectID(url) },
         req.body,
         {
@@ -110,7 +128,7 @@ class FoundPostController {
   public async deleteItem(req: Request, res: Response): Promise<any> {
     try {
       const url = req.params.url;
-      const deletedItem = await FoundPost.findOneAndDelete(
+      const deletedItem = await StuffPost.findOneAndDelete(
         { _id: new mongodb.ObjectID(url) },
         req.body
       );
@@ -138,11 +156,11 @@ class FoundPostController {
   public async increaseBrowseCnt(req: Request, res: Response): Promise<any> {
     try {
       const url = req.params.url;
-      const updatedItem = await FoundPost.findOneAndUpdate(
+      const updatedItem = await StuffPost.findOneAndUpdate(
         { _id: new mongodb.ObjectID(url) },
         { $inc: { browse: 1 } },
-        {}
-      );
+        { new: true }
+      ).populate("user", ["name", "phone", "photo"]);
 
       if (!updatedItem)
         return res.status(400).json({
@@ -165,4 +183,4 @@ class FoundPostController {
   }
 }
 
-export default new FoundPostController();
+export default new StuffPostController();

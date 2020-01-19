@@ -69,16 +69,19 @@ class MobileUserController {
 
   public async updateUser(req: Request, res: Response): Promise<any> {
     try {
-      console.log("ggggggggggggg");
-      const _id = req.params._id;
+      const _id = req.userId;
+
+      console.log("params", req.params);
+      console.log("request body", _id, req.body);
+
       const updatedUser = await User.findOneAndUpdate(
         { _id: new mongodb.ObjectID(_id) },
-        req.body,
-        {}
+        { $set: req.body },
+        { new: true }
       );
 
       if (!updatedUser)
-        return res.status(400).json({
+        return res.status(200).json({
           success: false,
           msg: "User not updated"
         });
@@ -86,7 +89,7 @@ class MobileUserController {
       res.status(200).json({
         success: true,
         msg: "User updated.",
-        post: updatedUser
+        user: updatedUser
       });
     } catch (err) {
       console.log("error => ", err);
