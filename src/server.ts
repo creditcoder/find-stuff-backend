@@ -19,6 +19,8 @@ import tagRoutes from "./routes/tagRoutes";
 import stuffpostRoutes from "./routes/stuffpostRoutes";
 import stuffpostRoutes2 from "./routes/stuffpostRoutes2";
 
+import messageRoute from "./routes/messageRoutes";
+
 import userRoutes2 from "./routes/userRoutes2";
 
 class Server {
@@ -75,6 +77,7 @@ class Server {
     this.app.use("/api/tag", tagRoutes);
     this.app.use("/api/contact", contactRoutes);
     this.app.use("/api/stuffpost", stuffpostRoutes);
+    this.app.use("/api/message", messageRoute);
 
     ////////////////////////////////////////////////////////////////////////
 
