@@ -14,6 +14,7 @@ import userRoutes from "./routes/userRoutes";
 import postRoutes from "./routes/postRoutes";
 import notificationRoutes from "./routes/notificationRoutes";
 import newsRoutes from "./routes/newsRoutes";
+import profileRoute from "./routes/profileRoutes";
 import contactRoutes from "./routes/contactRoutes";
 import tagRoutes from "./routes/tagRoutes";
 import stuffpostRoutes from "./routes/stuffpostRoutes";
@@ -78,6 +79,7 @@ class Server {
     this.app.use("/api/contact", contactRoutes);
     this.app.use("/api/stuffpost", stuffpostRoutes);
     this.app.use("/api/message", messageRoute);
+    this.app.use("/api/profile", profileRoute);
 
     ////////////////////////////////////////////////////////////////////////
 
