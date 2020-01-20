@@ -37,9 +37,9 @@ class ProfileController {
 
   public async createItem(req: Request, res: Response): Promise<void> {
     try {
-      const { version, share, about, service } = req.body;
+      const { version, share, about, service, phone } = req.body;
 
-      const newItem = new Profile({ version, share, about, service });
+      const newItem = new Profile({ version, share, about, service, phone });
       await newItem.save();
 
       res.status(200).json({
@@ -59,6 +59,9 @@ class ProfileController {
   public async updateItem(req: Request, res: Response): Promise<any> {
     try {
       const url = req.params.url;
+
+      console.log(req.body, "fffffffff");
+
       const updatedItem = await Profile.findOneAndUpdate(
         { _id: new mongodb.ObjectID(url) },
         req.body,

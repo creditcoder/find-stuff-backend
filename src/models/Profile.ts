@@ -5,6 +5,7 @@ const ProfileSchema = new Schema({
   share: { type: String, required: true },
   about: { type: String, required: true },
   service: { type: String, required: true },
+  phone: { type: String, required: true },
 
   createAt: { type: Date, default: Date.now },
   updateAt: { type: Date, default: Date.now }
