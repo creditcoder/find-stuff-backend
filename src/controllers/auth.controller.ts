@@ -91,6 +91,54 @@ class AuthController {
       });
   }
 
+  public async otp(req: Request, res: Response) {
+    // body request validation
+
+    const { phone } = req.body;
+
+    if (!phone) return res.status(200).json({ success: false, msg: "错号码." });
+
+    console.log("will send to the alibaba...", phone);
+
+    ///////////////////////////////////////////////////
+
+    let IHuyi = require("ihuyi106");
+    let account = "18899653499"; //C49435409
+    let password = "777flew405";
+    let apiKey = "566307019bd9d17ce6c7686c4f876780"; // international api key, if exist
+
+    let mobile = "18943739697";
+
+    let iCountryCode = "86";
+    let iMobile = "63*********";
+
+    // apiKey is optional
+    var iHuyi = new IHuyi(account, password, apiKey);
+
+    iHuyi.send(mobile, phone, function(err, smsId) {
+      if (err) {
+        console.log("err occured during otp...", err.message, smsId);
+      } else {
+        console.log("SMS sent, and smsId is " + smsId);
+      }
+    });
+
+    iHuyi.sendInternational(iCountryCode, iMobile, phone, function(err, smsId) {
+      if (err) {
+        console.log("err, international....", err.message, smsId);
+      } else {
+        console.log("SMS sent, and smsId is " + smsId);
+      }
+    });
+
+    ///////////////////////////////////////////////////
+
+    res.status(200).json({
+      success: true,
+      msg: "Sign in success."
+    });
+  }
+
   public async register(req: Request, res: Response) {
     // body request validation
     const { error } = signupValidation(req.body);
