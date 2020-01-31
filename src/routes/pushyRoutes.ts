@@ -1,5 +1,5 @@
 import { Router } from "express";
-import Pushy from "pushy";
+const Pushy = require("pushy");
 
 class AuthRoutes {
   public router: Router;
