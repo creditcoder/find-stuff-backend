@@ -11,7 +11,6 @@ import uploadRoutes from "./routes/uploadRoutes";
 import downloadRoutes from "./routes/downloadRoutes";
 
 import authRoutes from "./routes/authRoutes";
-import pushyRoutes from "./routes/pushyRoutes";
 import userRoutes from "./routes/userRoutes";
 import postRoutes from "./routes/postRoutes";
 import notificationRoutes from "./routes/notificationRoutes";
@@ -64,7 +63,6 @@ app.use(compression());
 app.use(cors());
 ///////////////////////////////////////
 app.use("/auth", authRoutes);
-app.use("/pushy", pushyRoutes);
 
 app.use("/upload", uploadRoutes);
 app.use("/download", downloadRoutes);
