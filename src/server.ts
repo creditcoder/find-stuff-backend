@@ -74,10 +74,10 @@ app.use("/api/news", newsRoutes);
 app.use("/api/tag", tagRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/stuffpost", stuffpostRoutes);
+app.use("/api2/stuffpost", stuffpostRoutes2);
 app.use("/api/message", messageRoute);
 app.use("/api/profile", profileRoute);
 app.use("/api2/user", userRoutes2);
-app.use("/api2/stuffpost", stuffpostRoutes2);
 
 server.listen(app.get("port"), () => {
   console.log("Server on port", app.get("port"));
