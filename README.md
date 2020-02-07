@@ -4,4 +4,5 @@ with Nodejs, TypeScript, and MongoDB
 
 # openssl command to generate key files
 
-openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365
+1. openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365
+2. config server.ts

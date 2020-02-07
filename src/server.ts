@@ -31,12 +31,12 @@ import SocketIOServer from "socket.io";
 import initializeSocketIO from "./socket";
 
 const app = express();
-const server = new https.Server(
-  {
-    key: fs.readFileSync("./key.pem"),
-    cert: fs.readFileSync("./cert.pem"),
-    passphrase: "123456"
-  },
+const server = new http.Server(
+  // {
+  //   key: fs.readFileSync("./key.pem"),
+  //   cert: fs.readFileSync("./cert.pem"),
+  //   passphrase: "123456"
+  // },
   app
 );
 const io = SocketIOServer(server);
