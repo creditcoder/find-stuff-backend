@@ -23,7 +23,7 @@ export interface Message {
 }
 
 export const sendMessage = (socket: Socket | Server) => (message: Message) =>
-  socket.emit("message", message);
+  socket.emit("bg_message", message);
 
 export default (io: Server, connectedUsers: any) => {
   const messages: Set<Message> = new Set();
@@ -33,7 +33,6 @@ export default (io: Server, connectedUsers: any) => {
     connectedUsers[user_id] = socket.id;
 
     const lastNote = await getLastNote();
-
     io.emit("data_last_note", lastNote);
 
     socket.on("getMessages", () => {
