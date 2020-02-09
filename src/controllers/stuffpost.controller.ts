@@ -99,7 +99,7 @@ class StuffPostController {
       await newStuffPostLimit.save();
     }
 
-    if (newStuffPostLimit.limit < 0) {
+    if (newStuffPostLimit.limit < 1) {
       res.status(200).json({
         success: false,
         msg: "一天可能只有3次!"

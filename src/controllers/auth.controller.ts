@@ -197,7 +197,7 @@ class AuthController {
 
     console.log(newOtp.limit, "asdfa");
 
-    if (newOtp.limit < 0) {
+    if (newOtp.limit < 1) {
       res.status(200).json({
         success: false,
         msg: "一天可能只有3次!"
