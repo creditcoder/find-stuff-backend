@@ -1,5 +1,6 @@
 import { Router } from "express";
 import stuffpostController from "../controllers/stuffpost.controller";
+import { tokenValidation } from "../middlewares/verifyToken";
 
 class StuffPostRoutes {
   router: Router;
@@ -14,7 +15,11 @@ class StuffPostRoutes {
     this.router.get("/:url", stuffpostController.getItem);
     this.router.post("/", stuffpostController.createItem);
     this.router.put("/:url", stuffpostController.updateItem);
-    this.router.delete("/:url", stuffpostController.deleteItem);
+    this.router.delete(
+      "/:url",
+      tokenValidation,
+      stuffpostController.deleteItem
+    );
   }
 }
 

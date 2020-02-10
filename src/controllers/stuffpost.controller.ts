@@ -7,8 +7,6 @@ import StuffPostLimit from "../models/StuffPostLimit";
 
 class StuffPostController {
   public async getItems(req: Request, res: Response): Promise<void> {
-    console.log(req.query);
-
     const tag = req.query.tag;
     const key = req.query.key;
     const kind = req.query.kind;
@@ -38,8 +36,6 @@ class StuffPostController {
     }
 
     const sortObj = parseInt(sort) === 1 ? { browse: -1 } : { _id: -1 };
-
-    console.log(filter, ",,,", sortObj);
 
     await StuffPost.createIndexes();
 
