@@ -164,6 +164,8 @@ class AuthController {
   public async otp(req: Request, res: Response) {
     // body request validation
 
+    console.log(req.body);
+
     const { phone } = req.body;
 
     if (!phone) return res.status(200).json({ success: false, msg: "错号码." });
@@ -312,6 +314,55 @@ class AuthController {
         msg: "Sign in success.",
         user: admin
       });
+  }
+
+  public async resetpass(req: Request, res: Response) {
+    const { phone, password, otp } = req.body;
+
+    if (!otp || otp === "")
+      return res.status(200).json({ success: true, msg: "没有输入验证码" });
+
+    console.log(otp, "otp from user input");
+
+    const otpExist = await Otp.findOne({ phone, otp });
+
+    console.log(otpExist, "otpExist");
+
+    if (!otpExist)
+      return res.status(200).json({ success: false, msg: "输入验证码错误" });
+
+    try {
+      const updatedUser = await Admin.findOneAndUpdate(
+        { phone },
+        { password },
+        {
+          new: true
+        }
+      );
+
+      const token: string = jwt.sign(
+        { _id: "" },
+        process.env["TOKEN_SECRET"] || "MyS3cr3tT0k3n",
+        {
+          expiresIn: 60 * 60
+        }
+      );
+
+      res
+        .status(200)
+        .header("auth_token", token)
+        .json({
+          success: true,
+          msg: "成功!",
+          user: updatedUser
+        });
+    } catch (err) {
+      console.log("error => ", err);
+      res.status(500).json({
+        success: false,
+        msg: "失败了"
+      });
+    }
   }
 }
 
