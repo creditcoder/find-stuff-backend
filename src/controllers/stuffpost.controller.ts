@@ -20,12 +20,15 @@ class StuffPostController {
     if (tag !== undefined && tag !== "") filter = { ...filter, tag };
     if (kind !== undefined && kind !== "") filter = { ...filter, kind };
 
-    if (key !== undefined && key !== "")
-      // filter = { ...filter, description: { $regex: key, $options: "i" } };
+    if (key !== undefined && key !== "") {
       filter = {
         ...filter,
-        $text: { $search: "'" + key + "' '" + region + "'" }
+        $or: [
+          { title: { $regex: key, $options: "i" } },
+          { description: { $regex: key, $options: "i" } }
+        ]
       };
+    }
 
     if (region !== undefined && region !== "")
       filter = { ...filter, place: { $regex: region, $options: "i" } };
