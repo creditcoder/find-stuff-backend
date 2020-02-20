@@ -30,7 +30,16 @@ export default (io: Server, connectedUsers: any) => {
 
   io.on("connection", async socket => {
     const { user_id } = socket.handshake.query;
-    connectedUsers[user_id] = socket.id;
+
+    console.log("user_id", user_id);
+
+    if (user_id) {
+      connectedUsers[user_id] = socket.id;
+      console.log("user signed... ... ...", user_id);
+      console.log("connectedUsers... .. ..", connectedUsers);
+    } else {
+      console.log("anonymous user... ... ...", user_id);
+    }
 
     const lastNote = await getLastNote();
     io.emit("data_last_note", lastNote);
@@ -55,6 +64,14 @@ export default (io: Server, connectedUsers: any) => {
         messages.delete(message);
         io.emit("deleteMessage", message.id);
       }, messageExpirationTimeMS);
+    });
+    socket.on("disconnect", _ => {
+      delete connectedUsers[user_id];
+      console.log(
+        user_id,
+        ":::::is going to leave from the socket server.",
+        connectedUsers
+      );
     });
   });
 };
