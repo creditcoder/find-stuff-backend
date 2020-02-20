@@ -8,7 +8,7 @@ export async function getLastNote() {
 
     if (!item) return "";
 
-    return item[0].content;
+    return item[0];
   } catch (err) {
     return "";
   }
