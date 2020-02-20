@@ -36,8 +36,6 @@ class MessageController {
 
     let res_items = await User.populate(items, { path: "_id" });
 
-    console.log("666666666666666666", res_items);
-
     res.json(res_items);
   }
 
@@ -100,8 +98,7 @@ class MessageController {
         item: newItem
       });
 
-      // req.io.emit("bg_message", content);
-      req.io.emit(receiver, content);
+      req.io.emit(receiver, newItem);
     } catch (err) {
       console.log("error => ", err);
       res.status(500).json({
