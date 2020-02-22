@@ -204,6 +204,8 @@ class StuffPostController {
   }
 
   public async deleteItem(req: Request, res: Response): Promise<any> {
+    console.log("111111111111111111111", req.params);
+
     try {
       const url = req.params.url;
       const deletedItem = await StuffPost.findOneAndDelete(

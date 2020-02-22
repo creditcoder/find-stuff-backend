@@ -31,7 +31,7 @@ class StuffPostController {
     if (region !== undefined && region !== "")
       filter = { ...filter, place: { $regex: region, $options: "i" } };
 
-    if (sort !== undefined && sort !== "" && parseInt(sort) === 2) {
+    if (sort !== undefined && sort !== "" && parseInt(sort) === 0) {
       filter = { ...filter, ads: true };
     }
 

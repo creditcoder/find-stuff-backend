@@ -90,11 +90,12 @@ app.use("/api/tag", tagRoutes);
 app.use("/api/contact", contactRoutes);
 
 app.use("/api/stuffpost", stuffpostRoutes);
-app.use("/admin-api/stuffpost", stuffpostAdminRoutes);
+app.use("/admin_api/stuffpost", stuffpostAdminRoutes);
 app.use("/api2/stuffpost", stuffpostRoutes2);
 
 app.use("/api/message", messageRoute);
 app.use("/api/profile", profileRoute);
+
 app.use("/api2/user", userRoutes2);
 
 /////////////////////////----------admin----------///////////////////////////
