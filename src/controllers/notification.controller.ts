@@ -48,7 +48,7 @@ class NotificationController {
         item: newItem
       });
 
-      req.io.emit("data_last_note", newItem);
+      req.io.emit("data_note", newItem);
     } catch (err) {
       console.log("error => ", err);
       res.status(500).json({
