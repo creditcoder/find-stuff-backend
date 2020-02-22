@@ -34,6 +34,13 @@ const StuffPostSchema = new Schema(
       }
     ],
 
+    reports: [
+      {
+        user: { type: Schema.Types.ObjectId, ref: "User", required: true },
+        report: { type: String, required: true, text: true }
+      }
+    ],
+
     createAt: { type: Date, default: Date.now },
     updateAt: { type: Date, default: Date.now }
   },
