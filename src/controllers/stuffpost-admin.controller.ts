@@ -11,10 +11,10 @@ class StuffPostController {
 
     console.log(req.query);
 
-    const { current = 1, pageSize = 10 } = req.query;
+    const { current = 1, pageSize = 10, report = false } = req.query;
 
     console.log("req.query......", req.query);
-    console.log("page, size,,,,", current, pageSize);
+    console.log("page, size,,,,", current, pageSize, report);
 
     // let items = await StuffPost.paginate().populate("user", [
     //   "name",
@@ -30,8 +30,13 @@ class StuffPostController {
       populate: "user" //not sure how to set child field
     };
 
-    const querys = {};
+    let querys = {};
+    // if (report) querys = { reports: { $gt: { $size: 0 } } };
+    if (report) querys = { "reports.0": { $exists: true } };
+    console.log("query...", querys);
     const result = await StuffPost.paginate(querys, options);
+
+    console.log(result, "----");
 
     /**
     {

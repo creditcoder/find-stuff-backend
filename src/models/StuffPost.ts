@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-const mongoosePaginate = require("mongoose-paginate-v2");
+import mongoosePaginate from "mongoose-paginate-v2";
 
 const StuffPostSchema = new Schema(
   {

@@ -177,6 +177,21 @@
     "@types/bson" "*"
     "@types/node" "*"
 
+"@types/mongoose-paginate-v2@^1.3.1":
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/@types/mongoose-paginate-v2/-/mongoose-paginate-v2-1.3.1.tgz#03fec5e415075f756458bcf1e4f9eec01b7bdd31"
+  integrity sha512-Ea0Jd5kqyjrSUxynk6RWnIuAjZ2cjwy1FnTKdxWe8kaJGyc3QJHsGZxV28wAiJi//hlSQSBYZ+hoiqLxIIV1mA==
+  dependencies:
+    "@types/mongoose" "*"
+
+"@types/mongoose@*":
+  version "5.7.1"
+  resolved "https://registry.yarnpkg.com/@types/mongoose/-/mongoose-5.7.1.tgz#503d902e873dce8546f2fed6b8ed9c6474cb353d"
+  integrity sha512-lCe+ctykvXgI58bWlEAgladuVHmgSWbAuCMapy9+2m+aUm4DfjYGJ1HXIqubr+YflDN8hfjDaX7BGVxO/Fl06Q==
+  dependencies:
+    "@types/mongodb" "*"
+    "@types/node" "*"
+
 "@types/mongoose@^5.5.20":
   version "5.7.0"
   resolved "https://registry.yarnpkg.com/@types/mongoose/-/mongoose-5.7.0.tgz#b36a888fa38a914fddeda8c5595d2502af000ace"
