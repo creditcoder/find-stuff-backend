@@ -2,13 +2,12 @@ import { Schema, model } from "mongoose";
 
 const MessageSchema = new Schema(
   {
-    sender: {
+    room: {
       type: Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-      autopopulate: { select: "name phone photo" }
+      ref: "Room",
+      required: true
     },
-    receiver: {
+    user: {
       type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
@@ -16,7 +15,6 @@ const MessageSchema = new Schema(
     },
 
     content: { type: String, required: true, text: true },
-
     checked: { type: Number, required: true },
 
     createAt: { type: Date, default: Date.now },

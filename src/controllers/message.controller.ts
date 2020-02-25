@@ -42,12 +42,10 @@ class MessageController {
   public async getItem(req: Request, res: Response) {
     try {
       const url = req.params.url;
-      const user_id = req.query.user_id;
 
       const filter = {
-        sender: new mongodb.ObjectID(url),
-        receiver: new mongodb.ObjectID(user_id),
-        checked: 0
+        room_id: new mongodb.ObjectID(url)
+        // checked: 0
       };
 
       console.log("get details filter... ... ...", filter);
@@ -82,11 +80,11 @@ class MessageController {
 
   public async createItem(req: Request, res: Response): Promise<void> {
     try {
-      const { sender, receiver, content } = req.body;
+      const { user, room, content, receiver } = req.body;
 
       const newItem = new Message({
-        sender: new mongodb.ObjectID(sender),
-        receiver: new mongodb.ObjectID(receiver),
+        user: new mongodb.ObjectID(user),
+        room: new mongodb.ObjectID(room),
         content,
         checked: 0
       });
@@ -98,7 +96,8 @@ class MessageController {
         item: newItem
       });
 
-      req.io.emit(receiver, newItem);
+      // req.io.emit(receiver, newItem);
+      req.msg(receiver, newItem);
     } catch (err) {
       console.log("error => ", err);
       res.status(500).json({
