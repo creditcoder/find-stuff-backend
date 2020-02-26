@@ -3,68 +3,72 @@ import mongodb from "mongodb";
 
 import Room from "../models/Room";
 import User from "../models/User";
+import Message from "../models/Message";
 
 class RoomController {
   public async getItems(req: Request, res: Response): Promise<void> {
     const user_id = req.query.user_id;
     console.log("room list of ", user_id);
     if (!user_id) {
-      res.json([]);
+      res.json({
+        success: false,
+        msg: "Item not found",
+        items: []
+      });
       return;
     }
-    let filter = {
-      $or: [
-        // { sender: new mongodb.ObjectID(user_id) },
-        { receiver: new mongodb.ObjectID(user_id) }
-      ],
-      checked: 0
-    };
+    let rooms = await Room.find({
+      users: { $in: [new mongodb.ObjectID(user_id)] } //$elemMatch:{$eq:ObjectId("5e2916615f55cc6e3cb9838b")}
+    });
 
-    let items = await Room.aggregate([
-      {
-        $match: filter
-      },
-      {
-        $group: {
-          _id: "$sender",
-          total: { $sum: 1 },
-          createAt: { $last: "$createAt" },
-          content: { $last: "$content" }
+    const promises = await rooms.map(async (r, i) => {
+      let m = await Message.aggregate([
+        {
+          $match: {
+            room: { $eq: new mongodb.ObjectID(r._id) },
+            user: { $ne: new mongodb.ObjectID(user_id) },
+            checked: 0
+          }
+        },
+        {
+          $group: {
+            _id: "$room",
+            missed: { $sum: 1 }
+          }
         }
-      }
-    ]);
+      ]);
 
-    let res_items = await User.populate(items, { path: "_id" });
+      console.log(m[0], "_____________________________________");
 
-    res.json(res_items);
+      console.log(r, "+******************************");
+
+      return Object.assign({}, r._doc, {
+        missed: m[0].missed
+      });
+    });
+
+    rooms = await Promise.all(promises);
+
+    console.log(rooms, "`````````````````````");
+
+    res.json({
+      success: true,
+      msg: "Item found",
+      items: rooms
+    });
   }
 
   public async getItem(req: Request, res: Response) {
     try {
       const url = req.params.url;
-      const user_id = req.query.user_id;
 
-      const filter = {
-        sender: new mongodb.ObjectID(url),
-        receiver: new mongodb.ObjectID(user_id),
-        checked: 0
-      };
-
-      console.log("get details filter... ... ...", filter);
-
-      const items = await Room.find(filter);
-
-      console.log("get room details.....", items);
+      const items = await Room.find({ _id: url });
 
       if (!items)
         return res.status(400).json({
           success: false,
           msg: "Item not found"
         });
-
-      await Room.updateMany(filter, {
-        $set: { checked: 1 }
-      });
 
       res.status(200).json({
         success: true,
@@ -84,20 +88,25 @@ class RoomController {
     try {
       const { uid1, uid2 } = req.body;
 
-      const currentItem = Room.find({
+      console.log("uid1, uid2, ", uid1, uid2);
+
+      if (!uid1 || !uid2) {
+        res.status(200).json({
+          success: false,
+          msg: "Item not saved"
+        });
+        return;
+      }
+
+      const filter = {
         $and: [
-          {
-            users: {
-              $elemMatch: { $eq: new mongodb.ObjectID(uid1) }
-            }
-          },
-          {
-            users: {
-              $elemMatch: { $eq: new mongodb.ObjectID(uid2) }
-            }
-          }
+          { users: new mongodb.ObjectID(uid1) },
+          { users: new mongodb.ObjectID(uid2) }
         ]
-      });
+      };
+
+      const rooms = await Room.find(filter);
+      const currentItem = rooms[0];
 
       if (currentItem) {
         res.status(200).json({
@@ -124,7 +133,7 @@ class RoomController {
       req.io.emit(uid2, newItem);
     } catch (err) {
       console.log("error => ", err);
-      res.status(500).json({
+      res.status(200).json({
         success: false,
         msg: "Item not saved"
       });

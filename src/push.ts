@@ -13,17 +13,26 @@ const options = {
   }
 };
 
-export const msg = async (uid, message) => {
+export const msg = async (uid, data) => {
   const user = await User.find({ _id: uid });
-  if (!user || user.device) {
+  const channel = user[0].device;
+
+  if (!user[0] || !channel) {
     console.log("wrong user");
     return;
   }
 
-  pushyAPI.sendPushNotification(message, user.device, options, function(
-    err,
-    id
-  ) {
+  console.log(user[0], "====user");
+  console.log(channel, "===device");
+
+  const msgData = {
+    _id: data._id,
+    content: data.content,
+    createAt: data.createAt,
+    channel
+  };
+
+  pushyAPI.sendPushNotification(msgData, channel, options, function(err, id) {
     // Log errors to console
     if (err) {
       return console.log("Fatal Error", err);

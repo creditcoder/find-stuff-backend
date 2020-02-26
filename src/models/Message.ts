@@ -6,6 +6,7 @@ const MessageSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Room",
       required: true
+      // autopopulate: { select: "users" }
     },
     user: {
       type: Schema.Types.ObjectId,

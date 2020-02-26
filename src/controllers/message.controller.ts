@@ -3,40 +3,40 @@ import mongodb from "mongodb";
 
 import Message from "../models/Message";
 import User from "../models/User";
+import Room from "../models/Room";
 
 class MessageController {
   public async getItems(req: Request, res: Response): Promise<void> {
-    const user_id = req.query.user_id;
-    console.log("message list of ", user_id);
-    if (!user_id) {
-      res.json([]);
+    const { room_id, user_id } = req.query;
+    console.log("message list of ", room_id);
+    if (!room_id) {
+      res.json({
+        success: true,
+        msg: "Item found",
+        items: []
+      });
       return;
     }
     let filter = {
-      $or: [
-        // { sender: new mongodb.ObjectID(user_id) },
-        { receiver: new mongodb.ObjectID(user_id) }
-      ],
-      checked: 0
+      room: new mongodb.ObjectID(room_id)
     };
 
-    let items = await Message.aggregate([
-      {
-        $match: filter
-      },
-      {
-        $group: {
-          _id: "$sender",
-          total: { $sum: 1 },
-          createAt: { $last: "$createAt" },
-          content: { $last: "$content" }
-        }
-      }
-    ]);
+    let items = await Message.find(filter);
 
-    let res_items = await User.populate(items, { path: "_id" });
+    let checkFilter = {
+      room: new mongodb.ObjectID(room_id),
+      user: { $ne: new mongodb.ObjectID(user_id) }
+    };
 
-    res.json(res_items);
+    await Message.updateMany(checkFilter, {
+      $set: { checked: 1 }
+    });
+
+    res.json({
+      success: true,
+      msg: "Item found",
+      items
+    });
   }
 
   public async getItem(req: Request, res: Response) {
@@ -82,6 +82,8 @@ class MessageController {
     try {
       const { user, room, content, receiver } = req.body;
 
+      console.log(req.body, "received from ...");
+
       const newItem = new Message({
         user: new mongodb.ObjectID(user),
         room: new mongodb.ObjectID(room),
@@ -96,10 +98,20 @@ class MessageController {
         item: newItem
       });
 
-      // req.io.emit(receiver, newItem);
+      req.io.emit(receiver, newItem);
       req.msg(receiver, newItem);
+
+      await Room.findOneAndUpdate(
+        { _id: new mongodb.ObjectID(room) },
+        {
+          label: content
+        },
+        {
+          new: true
+        }
+      );
     } catch (err) {
-      console.log("error => ", err);
+      console.log("save error => ", err);
       res.status(500).json({
         success: false,
         msg: "Item not saved"
