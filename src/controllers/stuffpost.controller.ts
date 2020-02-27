@@ -41,9 +41,7 @@ class StuffPostController {
 
     let items = [];
 
-    items = await StuffPost.find(filter)
-      // .populate("user", ["name", "phone", "photo"])
-      .sort(sortObj);
+    items = await StuffPost.find(filter).sort(sortObj);
 
     res.json(items);
   }

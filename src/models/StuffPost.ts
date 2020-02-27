@@ -7,7 +7,7 @@ const StuffPostSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
-      autopopulate: { select: "name phone photo" }
+      autopopulate: { select: "name phone photo location" }
     },
 
     kind: { type: String, required: true }, //lost, found
@@ -46,7 +46,7 @@ const StuffPostSchema = new Schema(
           type: Schema.Types.ObjectId,
           ref: "User",
           required: true,
-          autopopulate: { select: "name phone photo" }
+          autopopulate: { select: "name phone photo location" }
         },
         report: { type: String, required: true, text: true }
       }

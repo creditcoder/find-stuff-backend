@@ -142,7 +142,7 @@ class AuthController {
     // body request validation
 
     const { error } = signinValidation(req.body);
-    if (error) return res.status(400).json(error.message);
+    if (error) return res.status(200).json({ success: false, msg: error.message });
 
     // find user
     // const user = await User.findOne({ email: req.body.email });
@@ -153,7 +153,7 @@ class AuthController {
     });
 
     if (!user)
-      return res.status(200).json({ success: false, msg: "找不到用户." });
+      return res.status(200).json({ success: false, msg: "错误的信息。" });
 
     const rooms = await Room.find({
       users: { $in: [new mongodb.ObjectID(user._id)] } //$elemMatch:{$eq:ObjectId("5e2916615f55cc6e3cb9838b")}

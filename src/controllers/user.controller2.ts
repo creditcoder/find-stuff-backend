@@ -52,8 +52,7 @@ class UserController2 {
 
   public async updateLocation(req: Request, res: Response): Promise<any> {
     try {
-      console.log("params", req.params.id);
-      console.log("request body", req.body);
+      console.log("update location request body", req.body);
 
       const { user_id, location } = req.body;
 
