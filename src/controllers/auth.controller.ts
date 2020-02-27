@@ -45,6 +45,15 @@ class AuthController {
     if (!otpExist)
       return res.status(200).json({ success: false, msg: "输入验证码错误" });
 
+    const currentUser = await User.find({ phone });
+    if (currentUser) {
+      res.status(200).json({
+        success: false,
+        msg: "您已经注册。"
+      });
+      return;
+    }
+
     try {
       const newUser = new User({
         email: "test@test.com",
@@ -73,7 +82,7 @@ class AuthController {
         });
     } catch (err) {
       console.log("error => ", err);
-      res.status(500).json({
+      res.status(200).json({
         success: false,
         msg: "失败了"
       });
@@ -212,7 +221,10 @@ class AuthController {
       await newOtp.save();
     }
 
-    console.log(newOtp.limit, "asdfa");
+    console.log(
+      newOtp.limit,
+      "it's possible to send otp request 3 times a day."
+    );
 
     if (newOtp.limit < 1) {
       res.status(200).json({
