@@ -109,9 +109,16 @@ class NotificationController {
         msg: "Item deleted.",
         item: deletedItem
       });
+
+      const prevItem = await Notification.find().sort({_id:-1}).limit(1);
+      console.log(prevItem, 'prevNotification');
+      if (prevItem[0])
+        req.io.emit("data_note", prevItem[0]);      
+      else 
+        req.io.emit("data_note", 0);
     } catch (err) {
       console.log("error => ", err);
-      res.status(500).json({
+      res.status(200).json({
         success: false,
         msg: "Item not deleted"
       });
