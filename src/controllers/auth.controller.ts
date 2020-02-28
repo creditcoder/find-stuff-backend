@@ -45,7 +45,10 @@ class AuthController {
     if (!otpExist)
       return res.status(200).json({ success: false, msg: "输入验证码错误" });
 
-    const currentUser = await User.find({ phone });
+    const currentUser = await User.findOne({ phone });
+
+    console.log(currentUser, 'currentUser')
+
     if (currentUser) {
       res.status(200).json({
         success: false,
