@@ -142,6 +142,18 @@ class StuffPostController {
       });
     } catch (err) {
       console.log("error => ", err);
+
+      await StuffPostLimit.findOneAndUpdate(
+        {
+          user: req.body.user,
+          createAt: today.toDate()
+        },
+        { $inc: { limit: 1 } },
+        {
+          new: true
+        }
+      );
+
       res.status(200).json({
         success: false,
         msg: "失败了!"
