@@ -7,6 +7,7 @@ const UserSchema = new Schema({
   name: { type: String },
   photo: { type: String, lowercase: true },
   location: { type: String, lowercase: true },
+  address: { type: String, lowercase: true },
 
   phone: { type: String, required: true, unique: true },
   password: { type: String, required: true },
@@ -14,7 +15,7 @@ const UserSchema = new Schema({
   otp: { type: String },
 
   device: { type: String },
-
+  block: { type: Boolean, required: true },
   createAt: { type: Date, default: Date.now },
   updateAt: { type: Date, default: Date.now }
 });

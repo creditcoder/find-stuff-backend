@@ -50,6 +50,35 @@ class UserController2 {
     }
   }
 
+  public async block(req: Request, res: Response): Promise<any> {
+    try {
+      const { _id, block } = req.body;
+      const updatedItem = await User.findOneAndUpdate(
+        { _id: new mongodb.ObjectID(_id) },
+        { block },
+        { new: true }
+      );
+
+      if (!updatedItem)
+        return res.status(200).json({
+          success: false,
+          msg: "Item not updated"
+        });
+
+      res.status(200).json({
+        success: true,
+        msg: "Item updated.",
+        item: updatedItem
+      });
+    } catch (err) {
+      console.log("error => ", err);
+      res.status(200).json({
+        success: false,
+        msg: "Item not updated"
+      });
+    }
+  }
+
   public async updateLocation(req: Request, res: Response): Promise<any> {
     try {
       console.log("update location request body", req.body);
