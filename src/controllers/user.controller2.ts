@@ -89,7 +89,7 @@ class UserController2 {
 
       const updatedUser = await User.findOneAndUpdate(
         { _id: new mongodb.ObjectID(user_id) },
-        { $set: { location } },
+        { $set: { location:location.city, address: location } },
         { new: true }
       );
 
