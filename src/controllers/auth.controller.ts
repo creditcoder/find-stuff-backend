@@ -158,6 +158,9 @@ class AuthController {
     if (!user)
       return res.status(200).json({ success: false, msg: "错误的信息。" });
 
+    if (user.block) 
+      return res.status(200).json({ success: false, msg: "您的帐户被禁止。" });    
+    
     const rooms = await Room.find({
       users: { $in: [new mongodb.ObjectID(user._id)] } //$elemMatch:{$eq:ObjectId("5e2916615f55cc6e3cb9838b")}
     });

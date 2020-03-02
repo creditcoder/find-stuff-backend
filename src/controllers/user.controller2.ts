@@ -70,6 +70,8 @@ class UserController2 {
         msg: "Item updated.",
         item: updatedItem
       });
+      if (updatedItem.block)
+        req.io.emit('banned_'+ updatedItem._id,{});
     } catch (err) {
       console.log("error => ", err);
       res.status(200).json({
