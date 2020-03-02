@@ -14,7 +14,7 @@ import jwt from "jsonwebtoken";
 import moment from "moment";
 import Admin from "../models/Admin";
 
-const SESSION_TIME = 60 * 60 * 60;
+const SESSION_TIME = 60 * 60 * 24 * 7;// week
 
 class AuthController {
   constructor() {}

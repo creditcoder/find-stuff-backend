@@ -19,6 +19,17 @@ class NotificationController {
     }      
     else 
       res.json(items);
+
+    //////////////----------------add read user--------------------/////////////
+    const user_id = req.query.user_id;
+    if (!user_id)
+      return;
+    
+    await Notification.updateMany(
+        {  },
+        { $addToSet: { users: user_id } },
+        { new: true }
+      );
   }
 
   public async getItem(req: Request, res: Response) {
