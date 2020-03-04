@@ -14,7 +14,7 @@ const UserSchema = new Schema({
   otp: { type: String },
 
   device: { type: String },
-  block: { type: Boolean, required: true },
+  block: { type: Boolean },
   createAt: { type: Date, default: Date.now },
   updateAt: { type: Date, default: Date.now }
 });
