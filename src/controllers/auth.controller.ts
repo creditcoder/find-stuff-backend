@@ -190,9 +190,30 @@ class AuthController {
 
     console.log(req.body);
 
-    const { phone } = req.body;
+    const { phone, kind } = req.body;
 
-    if (!phone) return res.status(200).json({ success: false, msg: "错号码." });
+    if (!phone) return res.status(200).json({ success: false, msg: "错号码!" });
+
+    const currentUser = await User.findOne({phone});
+    console.log(currentUser, '-----------------');
+
+    if (kind && kind === "forgot") {      
+      if (!currentUser) {
+        res.status(200).json({
+          success: false,
+          msg: "号码错了!"
+        });
+        return;
+      }      
+    } else {
+      if (currentUser) {
+        res.status(200).json({
+          success: false,
+          msg: "已经注册的用户!"
+        });
+        return;
+      }      
+    }
 
     ///////////////////////////////////////////////////
 
@@ -250,7 +271,7 @@ class AuthController {
         console.log("err occured during otp...", err.message, err.code);
         res.status(200).json({
           success: false,
-          msg: "正在发送验证码...." //err.message
+          msg: "号码错了!"//"正在发送验证码...."//err.message
         });
       } else {
         console.log("SMS sent, and smsId is " + smsId);
